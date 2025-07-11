@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import os
@@ -6,9 +6,9 @@ import json
 
 app = Flask(__name__)
 
-# 這兩個改成你自己的 LINE Channel Token / Secret
-LINE_CHANNEL_ACCESS_TOKEN = "你的 channel access token"
-LINE_CHANNEL_SECRET = "你的 channel secret"
+# 從環境變數讀取 token 和 secret
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
+LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET")
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
@@ -27,6 +27,7 @@ def webhook():
         handler.handle(body, signature)
     except Exception as e:
         print("Error:", e)
+        abort(400)
 
     return "OK", 200
 
@@ -35,12 +36,7 @@ def handle_message(event):
     user_message = event.message.text
     reply_text = f"你剛剛說的是：{user_message}"
 
-    # 回覆使用者
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=reply_text)
     )
-import os
-print("LINE_CHANNEL_SECRET =", os.getenv("LINE_CHANNEL_SECRET"))
-print("SECRET =", os.getenv("LINE_CHANNEL_SECRET"))
-print("LINE_SECRET = ", LINE_CHANNEL_SECRET)
