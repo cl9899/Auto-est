@@ -43,3 +43,4 @@ def handle_message(event):
 import os
 print("LINE_CHANNEL_SECRET =", os.getenv("LINE_CHANNEL_SECRET"))
 print("SECRET =", os.getenv("LINE_CHANNEL_SECRET"))
+print("LINE_SECRET = ", LINE_CHANNEL_SECRET)
