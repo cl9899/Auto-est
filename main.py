@@ -40,3 +40,5 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=reply_text)
     )
+import os
+print("LINE_CHANNEL_SECRET =", os.getenv("LINE_CHANNEL_SECRET"))
